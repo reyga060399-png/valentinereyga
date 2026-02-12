@@ -136,6 +136,7 @@ const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const music = document.getElementById("music");
 
+
 let scale = 1;
 let step = 0;
 
@@ -168,9 +169,9 @@ function moveNoButton(){
   gif.src = gifs[step];
 
   // YES grows downward
-  scale += 0.35;
-  yesBtn.style.transform =
-    `scale(${scale}) translateY(${(scale-1)*18}px)`;
+  // scale += 0.35;
+  // yesBtn.style.transform =
+    //scale(${scale}) translateY(${(scale-1)*18}px)`;
 
   // NO teleports
   noBtn.style.position = "fixed";

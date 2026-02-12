@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine ❤️</title>
+
+<style>
+:root{
+  --pink:#ff4d6d;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  text-align:center;
+}
+
+.card{
+  background:white;
+  padding:24px 22px 38px;
+  border-radius:22px;
+  width:92%;
+  max-width:420px;
+  box-shadow:0 15px 35px rgba(0,0,0,.2);
+  position:relative;
+  z-index:10;
+}
+
+.photo{
+  width:clamp(90px,25vw,120px);
+  height:clamp(90px,25vw,120px);
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid var(--pink);
+  margin-bottom:12px;
+}
+
+.gif{
+  width:clamp(140px,45vw,190px);
+  margin-bottom:12px;
+}
+
+h1{
+  font-size:clamp(1rem,4vw,1.35rem);
+  margin-bottom:18px;
+  min-height:56px;
+}
+
+.buttons{
+  margin-top:10px;
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+button{
+  padding:12px 26px;
+  border:none;
+  border-radius:40px;
+  font-size:clamp(.9rem,3.5vw,1rem);
+  cursor:pointer;
+  transition:.3s ease;
+}
+
+#yesBtn{
+  background:var(--pink);
+  color:white;
+  transform-origin:center top;
+}
+
+#noBtn{
+  background:#eee;
+}
+
+/* Falling hearts & flowers */
+.falling{
+  position:fixed;
+  top:-10px;
+  font-size:22px;
+  animation:fall linear infinite;
+  z-index:1;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(110vh) rotate(360deg);
+  }
+}
+
+@media(min-width:768px){
+  .card{
+    max-width:460px;
+    padding:30px 28px 46px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+  <img src="photo.jpeg" class="photo">
+
+  <img id="gif" class="gif"
+   src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif">
+
+  <h1 id="text">Will you be my Valentine on 14 February at Sailendra Restaurant pwiiissss? 💖</h1>
+
+  <div class="buttons">
+    <button id="yesBtn">Yes 💕</button>
+    <button id="noBtn">No 😢</button>
+  </div>
+</div>
+
+<script>
+const text = document.getElementById("text");
+const gif = document.getElementById("gif");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const music = document.getElementById("music");
+
+let scale = 1;
+let step = 0;
+
+// Play music after first tap (mobile safe)
+document.body.addEventListener("click",()=>{
+  music.play();
+},{once:true});
+
+const noTexts = [
+  "Are you sure? 🥺",
+  "Really sure? 😭",
+  "Think again please 💔",
+  "Don't break my heart 😖",
+  "I will cry... 😭"
+];
+
+const gifs = [
+  "https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif",
+  "https://media.giphy.com/media/OPU6wzx8JrHna/giphy.gif",
+  "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTFkZmY2MW90bXRzb2x5djZ6OWZld200NGdmZml0bGdmOHFmM2x2MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/P53TSsopKicrm/giphy.gif",
+  "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXJuejZwcW14d2M3N3Vybmk2NmlmeGFybWtxc2c5N252bXRudjUxcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xGDaiXa6ds8WS4jXUy/giphy.gif",
+  "https://media.giphy.com/media/f9EmXxglhdhAj1bo28/giphy.gif"
+];
+
+function moveNoButton(){
+  step++;
+  if(step >= noTexts.length) step = noTexts.length-1;
+
+  text.innerText = noTexts[step];
+  gif.src = gifs[step];
+
+  // YES grows downward
+  scale += 0.35;
+  yesBtn.style.transform =
+    `scale(${scale}) translateY(${(scale-1)*18}px)`;
+
+  // NO teleports
+  noBtn.style.position = "fixed";
+
+  const maxX = window.innerWidth - noBtn.offsetWidth;
+  const maxY = window.innerHeight - noBtn.offsetHeight;
+
+  noBtn.style.left = Math.random()*maxX + "px";
+  noBtn.style.top  = Math.random()*maxY + "px";
+}
+
+// Desktop hover
+noBtn.addEventListener("mouseenter", moveNoButton);
+
+// Mobile tap
+noBtn.addEventListener("touchstart", moveNoButton);
+
+yesBtn.addEventListener("click",()=>{
+  document.body.innerHTML = `
+    <div class="card">
+      <h1>I LOVE YOU SO MUCH ❤️</h1>
+      <img class="gif" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
+      <p>Thank you for being my Valentine 🌹</p>
+    </div>
+  `;
+  startConfetti();
+});
+
+function startConfetti(){
+  const s=document.createElement("script");
+  s.src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js";
+  s.onload=()=>{
+    confetti({particleCount:300,spread:100,origin:{y:0.6}});
+  };
+  document.body.appendChild(s);
+}
+
+// Falling hearts & flowers
+setInterval(()=>{
+  const f=document.createElement("div");
+  f.classList.add("falling");
+  f.innerHTML=Math.random()>0.5?"🌸":"❤️";
+  f.style.left=Math.random()*window.innerWidth+"px";
+  f.style.animationDuration=(Math.random()*3+3)+"s";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),6000);
+},400);
+</script>
+
+</body>
+</html>
